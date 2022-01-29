@@ -45,7 +45,7 @@ module.exports = {
     proxy: {
       // 这里可以配置多个代理, 用于区分开发和生产环境
       '/dev-api': {
-        target: 'http://127.0.0.1:8081',
+        target: 'http://127.0.0.1:8042',
         pathRewrite: {
           // 将 dev-api 替换为 ''
           // 这个配置的意思是 当请求 : /dev-api/user/add 转换为 => http://127.0.0.1/user/add

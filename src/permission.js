@@ -33,8 +33,11 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
-
-          next()
+          // TODO 这里注意: 这里获取到用户信息后放行, 这是不行的, 因为动态路由不会刷新
+          // 需要手动指定跳转路径
+          // next()
+          next({ ...to })
+          console.log({ ...to })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

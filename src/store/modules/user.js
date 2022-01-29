@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter, allAsyncRoutes, anyRoute, constantRoutes } from '@/router'
 import router from '@/router'
+import cloneDeep from 'lodash/cloneDeep'
 
 const getDefaultState = () => {
   return {
@@ -101,7 +102,9 @@ const actions = {
         commit('SET_USERINFO', data)
         // TODO 需要把 data.routes 数组替换为 router 里面配置的路由数组而不是 路由名称 数组
         // data.routes返回的是这个用户所有的路由权限信息, 就是所有这个用户要注册的异步路由的名称name数组
-        commit('SET_ROUTES', filterAsyncRoutes(allAsyncRoutes, data.routes))
+        // 这里需要注意使用 cloneDeep 深拷贝一份 allAsyncRoutes 进行过滤, 否则如果我们直接改变allAsyncRoutes的值,
+        // 下次登陆的话我们拿到的就是不完整的allAsyncRoutes, 因为上次登陆被过滤过了
+        commit('SET_ROUTES', filterAsyncRoutes(cloneDeep(allAsyncRoutes), data.routes))
         resolve(data)
       }).catch(error => {
         reject(error)
