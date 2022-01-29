@@ -13,7 +13,10 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
+    name: 'Super Admin',
+    buttons: ['user.add', 'user.list', 'user.delete'],
+    routes: ['User', 'Role', 'System', 'Rights', 'Params', 'Analysis',
+      'Enterprise', 'Individual', 'Industrial', 'Profession', 'Whole']
   },
   'editor-token': {
     roles: ['editor'],
@@ -26,7 +29,7 @@ const users = {
 module.exports = [
   // user login
   {
-    url: '/vue-admin-template/user/login',
+    url: '*/login',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -49,7 +52,7 @@ module.exports = [
 
   // get user info
   {
-    url: '/vue-admin-template/user/info\.*',
+    url: '*/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
@@ -72,7 +75,7 @@ module.exports = [
 
   // user logout
   {
-    url: '/vue-admin-template/user/logout',
+    url: '*/logout',
     type: 'post',
     response: _ => {
       return {

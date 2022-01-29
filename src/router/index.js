@@ -64,7 +64,7 @@ export const allAsyncRoutes = [
     path: '/system',
     // 首先需要显示一级路由组件
     component: Layout,
-    name: 'Permission',
+    name: 'System',
     // 点击系统管理会自动重定向到用户管理路由
     redirect: 'user/list',
     meta: { title: '系统管理', icon: 'el-icon-s-tools' },
@@ -86,6 +86,53 @@ export const allAsyncRoutes = [
         name: 'Rights',
         meta: { title: '权限管理', icon: 'el-icon-menu' },
         component: () => import('@/views/system/rights/index')
+      },
+      {
+        path: 'params/list',
+        name: 'Params',
+        meta: { title: '参数管理', icon: 'el-icon-s-data' },
+        component: () => import('@/views/system/params/index')
+      }
+    ]
+  },
+  {
+    path: '/analysis',
+    // 首先需要显示一级路由组件
+    component: Layout,
+    name: 'Analysis',
+    // 点击系统管理会自动重定向到用户管理路由
+    redirect: 'enterprise-overview/list',
+    meta: { title: '数据展示', icon: 'el-icon-s-tools' },
+    children: [
+      {
+        path: 'enterprise-overview/list',
+        name: 'Enterprise',
+        meta: { title: '企业活跃度概览', icon: 'el-icon-s-data' },
+        component: () => import('@/views/analysis/enterprise-overview/index')
+      },
+      {
+        path: 'individual-enterprise/list',
+        name: 'Individual',
+        meta: { title: '个人企业活跃度分析', icon: 'el-icon-s-data' },
+        component: () => import('@/views/analysis/individual-enterprise/index')
+      },
+      {
+        path: 'industrial-division/list',
+        name: 'Industrial',
+        meta: { title: '产业划分企业活跃度分析', icon: 'el-icon-s-data' },
+        component: () => import('@/views/analysis/industrial-division/index')
+      },
+      {
+        path: 'profession-division/list',
+        name: 'Profession',
+        meta: { title: '行业划分企业活跃度分析', icon: 'el-icon-s-data' },
+        component: () => import('@/views/analysis/profession-division/index')
+      },
+      {
+        path: 'whole-enterprise/list',
+        name: 'Whole',
+        meta: { title: '整体企业活跃度分析', icon: 'el-icon-s-data' },
+        component: () => import('@/views/analysis/individual-enterprise/index')
       }
     ]
   }
