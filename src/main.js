@@ -23,6 +23,8 @@ import '@/permission' // permission control
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
+// 这里的 process.env 找的是 .env.development 和 .env.production 文件
+// TODO mock 数据有两种实现方式, 一个是启动一个MockServer, 另外就是使用 MockJs, 这个配置就是使用MockJS(线上环境)
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()

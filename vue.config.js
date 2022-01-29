@@ -6,7 +6,8 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+// TODO 修改页面标题
+const name = defaultSettings.title || '大数据分析项目' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -36,7 +37,22 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    /**
+     * TODO 这里需要注释掉, 我们不使用 mock 数据, 禁用Mock数据
+     */
+    // before: require('./mock/mock-server.js'),
+    // TODO : 添加代理
+    proxy: {
+      // 这里可以配置多个代理, 用于区分开发和生产环境
+      '/dev-api': {
+        target: 'http://127.0.0.1:8081',
+        pathRewrite: {
+          // 将 dev-api 替换为 ''
+          // 这个配置的意思是 当请求 : /dev-api/user/add 转换为 => http://127.0.0.1/user/add
+          '^/dev-api': ''
+        }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -87,7 +103,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

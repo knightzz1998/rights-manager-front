@@ -30,6 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 常量路由就是所有用户不需要任何权限也可以看到的路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -42,127 +43,58 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
+      // TODO : 在集合里需要注意的是 name 和 title 不能一样, 否则会报错,二者冲突
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
+
+// 异步路由, 一般是自己定义的, 需要用户有相应的权限才能访问的路由
+export const allAsyncRoutes = [
+  // TODO 系统管理路由
+  {
+    path: '/system',
+    // 首先需要显示一级路由组件
+    component: Layout,
+    name: 'Permission',
+    // 点击系统管理会自动重定向到用户管理路由
+    redirect: 'user/list',
+    meta: { title: '系统管理', icon: 'el-icon-s-tools' },
+    children: [
+      {
+        path: 'user/list',
+        name: 'User',
+        meta: { title: '用户管理', icon: 'el-icon-user-solid' },
+        component: () => import('@/views/system/user/index')
+      },
+      {
+        path: 'role/list',
+        name: 'Role',
+        meta: { title: '角色管理', icon: 'el-icon-s-help' },
+        component: () => import('@/views/system/role/index')
+      },
+      {
+        path: 'rights/list',
+        name: 'Rights',
+        meta: { title: '权限管理', icon: 'el-icon-menu' },
+        component: () => import('@/views/system/rights/index')
+      }
+    ]
+  }
+]
+
+// 任意路由, 用户输入的所有非法路由都会转到404路由界面
+// 注册这个路由的时候, 一定要放到最后面
+// 放后面的原因是, 路由是从上到下匹配的, 上面匹配不到就是非法路由,非法路由在最后面拦截到 404 页面
+export const anyRoute = { path: '*', redirect: '/404', hidden: true }
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

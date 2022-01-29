@@ -28,11 +28,14 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      // TODO 修改侧边栏路由菜单
+      'routes'
     ]),
-    routes() {
-      return this.$router.options.routes
-    },
+    // 这里注释掉
+    // routes() {
+    //   return this.$router.options.routes
+    // },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
